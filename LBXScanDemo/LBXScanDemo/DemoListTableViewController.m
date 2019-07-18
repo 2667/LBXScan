@@ -36,7 +36,20 @@
     [self arrayItems];
     
     //显示配置按钮
-    [self showSetttingButton];
+//    [self showSetttingButton];
+     [Global sharedManager].libraryType = 1;
+    __weak __typeof(self) weakSelf = self;
+    [LBXPermission authorizeWithType:LBXPermissionType_Camera completion:^(BOOL granted, BOOL firstTime) {
+        if (granted) {
+            NSIndexPath *indexpath = [NSIndexPath indexPathForRow:2 inSection:0];
+            [weakSelf startWithIndexPath:indexpath];
+// [weakSelf openScanVCWithStyle:[StyleDIY weixinStyle]];
+        }
+        else if(!firstTime)
+        {
+            [LBXPermissionSetting showAlertToDislayPrivacySettingWithTitle:@"提示" msg:@"没有相机权限，是否前往设置" cancel:@"取消" setting:@"设置" ];
+        }
+    }];
 }
 
 - (NSArray*)arrayItems
@@ -120,7 +133,7 @@
     self.title = @"";
 }
 
-
+/*
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -189,6 +202,8 @@
   
 }
 
+*/
+
 - (void)startWithIndexPath:(NSIndexPath *)indexPath
 {
     NSArray* array = _arrayItems[indexPath.section][indexPath.row];
@@ -240,7 +255,7 @@
     [self openScanVCWithStyle:[StyleDIY InnerStyle]];
 }
 
-#pragma mark -无边框，内嵌4个角
+#pragma mark -无边框，内嵌4个角 微信
 - (void)weixinStyle
 {
     [self openScanVCWithStyle:[StyleDIY weixinStyle]];
